@@ -2,7 +2,7 @@ import cachai.utils.constants as C
 from cachai.strategies.base_strategy import BaseStrategy
 
 
-class SanityTest(BaseStrategy):
+class DebuggerStrategy(BaseStrategy):
 
     def predict(self, X, info):
         return info[C.Y_TRUE]

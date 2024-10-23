@@ -2,7 +2,7 @@ import cachai.utils.constants as C
 from cachai.strategies.base_strategy import BaseStrategy
 
 
-class Heuristic(BaseStrategy):
+class ConstantStrategy(BaseStrategy):
 
     def __init__(self):
         pass
