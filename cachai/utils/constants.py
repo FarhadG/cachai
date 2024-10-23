@@ -1,5 +1,3 @@
-from enum import Enum, auto
-
 # observation types
 HIT = 'hit'
 MISS = 'miss'
@@ -8,6 +6,7 @@ VALID_TTL = 'valid_ttl'
 
 # data columns
 EXPERIMENT_NAME = 'experiment_name'
+MODEL = 'model'
 MODEL_NAME = 'model_name'
 ITERATION = 'iteration'
 OBSERVATION_TYPE = 'observation_type'
