@@ -3,6 +3,7 @@ from cachai.utils.models import BaseModel
 
 
 class SanityTest(BaseModel):
+
     def predict(self, X, info):
         return info[C.Y_TRUE]
 
