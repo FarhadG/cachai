@@ -88,5 +88,5 @@ def evaluate(df):
     ])
 
 
-def evaluate_groupby(df, groupby=[C.EXPERIMENT_NAME, C.MODEL_NAME]):
+def evaluate_group(df, groupby=[C.EXPERIMENT_NAME, C.MODEL_NAME]):
     return df.groupby(groupby).apply(evaluate, include_groups=False)

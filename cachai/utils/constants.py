@@ -14,6 +14,7 @@ OBSERVATION_TIME = 'observation_time'
 Y_TRUE = 'y_true'
 Y_PRED = 'y_pred'
 HITS = 'hits'
+DEBUG = 'debug'
 
 # metrics
 RMSE = 'rmse'

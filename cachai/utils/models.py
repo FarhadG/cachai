@@ -8,12 +8,11 @@ import cachai.utils.types as T
 class BaseModel(ABC):
 
     @property
-    @abstractmethod
     def NAME(self) -> str:
-        pass
+        return type(self).__name__
 
     @abstractmethod
-    def predict(self, X: np.array) -> np.array:
+    def predict(self, X: np.array, info: dict = {}) -> np.array:
         pass
 
     @abstractmethod
@@ -22,6 +21,7 @@ class BaseModel(ABC):
         observation_time: int,
         observation_type: T.ObservationType,
         hits: int,
-        y_prev: float
+        y_prev: float,
+        info: dict = {}
     ) -> None:
         pass
