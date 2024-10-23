@@ -1,1 +1,6 @@
-numpy==2.1.2
+numpy
+pandas
+scikit-learn
+plotly
+torch
+torchvision

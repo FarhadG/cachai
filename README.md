@@ -10,21 +10,20 @@ Cachai aims to intelligently manage caching strategies for improved efficiency, 
 Modern systems require smart and adaptive caching to handle dynamic workloads. Cachai is built to go beyond traditional static caching strategies, applying advanced machine learning models to predict optimal caching policies, thus ensuring high performance and resource efficiency.
 
 ## Getting Started
-1. **Clone the repository**:
-   ```sh
-   git clone https://github.com/FarhadG/cachai.git
-   cd cachai
-   ```
 
-2. **Install dependencies**:
-   ```sh
-   pip install -r requirements.txt
-   ```
+**Clone the repository**:
+```sh
+git clone https://github.com/FarhadG/cachai.git
+cd cachai
+```
 
-3. **Run Cachai**:
-   ```sh
-   python cachai.py
-   ```
+**Install dependencies**:
+```sh
+python --version
+# Python 3.12.4
+
+pip install -r requirements.txt
+```
 
 ## Contributing
 Contributions are welcome! Please create an issue or submit a pull request to help improve Cachai.
