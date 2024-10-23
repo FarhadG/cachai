@@ -5,7 +5,7 @@ import cachai.utils.constants as C
 import cachai.utils.types as T
 
 
-class BaseModel(ABC):
+class BaseStrategy(ABC):
 
     @property
     def NAME(self) -> str:

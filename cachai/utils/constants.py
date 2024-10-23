@@ -6,8 +6,8 @@ VALID_TTL = 'valid_ttl'
 
 # data columns
 EXPERIMENT_NAME = 'experiment_name'
-MODEL = 'model'
-MODEL_NAME = 'model_name'
+STRATEGY = 'strategy'
+STRATEGY_NAME = 'strategy_name'
 ITERATION = 'iteration'
 OBSERVATION_TYPE = 'observation_type'
 OBSERVATION_TIME = 'observation_time'

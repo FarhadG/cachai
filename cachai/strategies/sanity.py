@@ -1,8 +1,8 @@
 import cachai.utils.constants as C
-from cachai.utils.models import BaseModel
+from cachai.strategies.base_strategy import BaseStrategy
 
 
-class SanityTest(BaseModel):
+class SanityTest(BaseStrategy):
 
     def predict(self, X, info):
         return info[C.Y_TRUE]
