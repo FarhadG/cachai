@@ -4,3 +4,7 @@ scikit-learn
 plotly
 torch
 torchvision
+
+# not needed
+httpx
+requests
