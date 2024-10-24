@@ -8,7 +8,7 @@ class ConstantStrategy(BaseStrategy):
         pass
 
     def predict(self, X, info):
-        return info[C.Y_TRUE]
+        return [5]
 
     def observe(self, observation_time, observation_type, hits, y_prev, info):
         pass
