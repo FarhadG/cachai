@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Optional
 from pydantic import BaseModel
 
 from cachai.strategies.heuristics_strategy import ConstantStrategy
@@ -18,7 +18,7 @@ class StrategyConfig(BaseModel):
         'DebuggerStrategy',
         'ConstantStrategy',
     ]
-    params: None | ConstantStrategy.Params = None
+    params: Optional[ConstantStrategy.Params] = None
 
 
 class Experiment(BaseModel):
