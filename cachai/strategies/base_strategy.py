@@ -8,9 +8,8 @@ import cachai.utils.types as T
 class BaseStrategy(ABC):
 
     @property
-    @abstractmethod
-    def NAME(self) -> str:
-        pass
+    def name(self) -> str:
+        return self.__class__.__name__
 
     @abstractmethod
     def predict(self, X: np.array, info: dict = {}) -> np.array:

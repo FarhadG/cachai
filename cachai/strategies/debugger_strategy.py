@@ -3,7 +3,6 @@ from cachai.strategies.base_strategy import BaseStrategy
 
 
 class DebuggerStrategy(BaseStrategy):
-    NAME = 'DebuggerStrategy'
 
     def predict(self, X, info):
         return info[C.Y_TRUE]

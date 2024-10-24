@@ -4,7 +4,6 @@ from cachai.strategies.base_strategy import BaseStrategy
 
 
 class ConstantStrategy(BaseStrategy):
-    NAME = 'ConstantStrategy'
 
     class Params(BaseModel):
         initial_ttl: int
