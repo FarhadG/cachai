@@ -1,16 +1,16 @@
-import cachai.utils.types as T
+import cachai.utils.models as M
 
 debugger_experiments = [
-    T.Experiment(
+    M.Experiment(
         experiment_name='Debugger Test',
-        experiment_config=T.ExperimentConfig(
+        experiment_config=M.ExperimentConfig(
             iterations=1_000,
             debug=True
         ),
-        simulator_config=T.SimulatorConfig(
+        simulator_config=M.SimulatorConfig(
             type='TTLSimulator'
         ),
-        strategy_config=T.StrategyConfig(
+        strategy_config=M.StrategyConfig(
             type='DebuggerStrategy',
         )
     )

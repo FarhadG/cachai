@@ -4,6 +4,8 @@ scikit-learn
 plotly
 torch
 torchvision
+nbformat>=4.2.0
+ipykernel
 
 # not needed
 httpx

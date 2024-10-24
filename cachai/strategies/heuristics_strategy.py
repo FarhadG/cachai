@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 
-import cachai.utils.constants as C
 from cachai.strategies.base_strategy import BaseStrategy
 
 
