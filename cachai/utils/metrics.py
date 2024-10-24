@@ -89,4 +89,7 @@ def evaluate(df):
 
 
 def evaluate_group(df, groupby=[C.EXPERIMENT_NAME, C.STRATEGY_NAME]):
-    return df.groupby(groupby).apply(evaluate, include_groups=False)
+    return df \
+        .groupby(groupby) \
+        .apply(evaluate, include_groups=False) \
+        .sort_values(by=C.EXPERIMENT_NAME)

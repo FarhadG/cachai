@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 import cachai.utils.constants as C
+from cachai.strategies.heuristics_strategy import ConstantStrategy
 
 """
 general types
@@ -32,7 +33,11 @@ class SimulatorConfig(BaseModel):
 
 
 class StrategyConfig(BaseModel):
-    type: Literal['DebuggerStrategy']
+    type: Literal[
+        'DebuggerStrategy',
+        'ConstantStrategy',
+    ]
+    params: None | ConstantStrategy.Params = None
 
 
 class Experiment(BaseModel):
