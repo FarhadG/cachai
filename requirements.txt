@@ -1,0 +1,15 @@
+numpy
+pandas
+scikit-learn
+plotly
+torch
+torchvision
+nbformat>=4.2.0
+ipykernel
+seaborn
+tqdm
+
+# not needed
+dash
+httpx
+requests
