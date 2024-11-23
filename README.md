@@ -23,6 +23,7 @@ python --version
 # Python 3.12.4
 
 pip install -r requirements.txt
+nbstripout --install
 ```
 
 ## Contributing
