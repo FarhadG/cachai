@@ -8,6 +8,7 @@ nbformat>=4.2.0
 ipykernel
 seaborn
 tqdm
+nbstripout
 
 # not needed
 dash
