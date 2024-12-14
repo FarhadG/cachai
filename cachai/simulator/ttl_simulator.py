@@ -16,7 +16,7 @@ class TTLSimulator:
         for i in range(config.records_count):
             mean = np.random.randint(*config.record_mean_range)
             variance = np.random.randint(*config.record_var_range)
-            key = f'key({i})_mean({mean})_var({variance})'
+            key = f'key={i}__mean={mean}__var={variance}'
             self._target_params_options.append((key, mean, variance))
 
     def feedback(self, y_true, y_pred):

@@ -1,14 +1,36 @@
+import numpy as np
+
 import cachai.utils.models as M
 import cachai.utils.constants as C
 from cachai.core.strategies.aggregate_strategy import IncrementStrategy
 import config.base_config as BaseConfig
 
-increment_experiments_configs = [
-    {'function_type': 'constant'},
-    # {'function_type': 'linear'},
-    # {'function_type': 'polynomial'},
-    # {'function_type': 'exponential'},
-]
+increment_experiments_configs = []
+
+for i in range(1, 20, 5):
+    increment_experiments_configs.append({
+        'experiment_name': f'Linear {i}',
+        'function_type': 'linear',
+        'factor': i
+    })
+for i in np.arange(0, 2, 0.25):
+    increment_experiments_configs.append({
+        'experiment_name': f'Scalar {i}',
+        'function_type': 'scalar',
+        'factor': i
+    })
+for i in np.arange(0, 2, 0.25):
+    increment_experiments_configs.append({
+        'experiment_name': f'Power {i}',
+        'function_type': 'power',
+        'factor': i
+    })
+for i in np.arange(0, 2, 0.25):
+    increment_experiments_configs.append({
+        'experiment_name': f'Exponential {i}',
+        'function_type': 'exponential',
+        'factor': i
+    })
 
 increment_experiments = []
 for config in increment_experiments_configs:
@@ -27,6 +49,7 @@ for config in increment_experiments_configs:
                     name=C.INCREMENT_STRATEGY,
                     params=IncrementStrategy.Params(
                         function_type=config['function_type'],
+                        factor=config['factor'],
                         per_key=True,
                     )
                 )

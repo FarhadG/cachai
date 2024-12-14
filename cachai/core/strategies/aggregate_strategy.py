@@ -27,10 +27,10 @@ class AggregrateStrategy(BaseStrategy):
         initial_value: float = 10
         ewma_alpha: float | None = None
         update_risk_threshold: float | None = None
+        max_value: float | None = 1e10
 
-    def __init__(self, params):
+    def __init__(self, params: Params):
         self._params = params
-        self._observed_keys = {}
         self._buffer = KeyedBuffer(params)
         self._ttl = KeyedDict(KeyedDict.Params(
             per_key=params.per_key,
@@ -90,14 +90,16 @@ class AggregrateStrategy(BaseStrategy):
 class IncrementStrategy(BaseStrategy):
 
     class Params(BaseModel):
-        function_type: Literal['constant', 'linear', 'polynomial', 'exponential']
+        function_type: Literal['linear', 'scalar', 'power', 'exponential']
         per_key: bool = True
         initial_value: float = 10
-        increment_approximated_ttl: bool = False
+        increment_feedback_ttl: bool = False
+        factor: float = 1
+        max_value: float | None = 1e10
 
     def __init__(self, params: Params):
+        super().__init__()
         self._params = params
-        self._observed_keys = {}
         self._ttl = KeyedDict(KeyedDict.Params(
             per_key=params.per_key,
             initial_value=params.initial_value
@@ -118,24 +120,24 @@ class IncrementStrategy(BaseStrategy):
             #       (e.g. 2 + C(5-2)^3)
             # TODO: should we use y_feedback or current TTL?
             current_ttl = self._ttl.get(key)
-            if self._params.increment_approximated_ttl:
+            if self._params.increment_feedback_ttl:
                 ttl_to_increment = max(y_feedback - current_ttl, current_ttl)
             else:
                 ttl_to_increment = current_ttl
-            updated_ttl = current_ttl + increment_function(ttl_to_increment)
+            updated_ttl = current_ttl + increment_function(ttl_to_increment, self._params.factor)
             self._ttl.set(updated_ttl, key)
         elif observation_type in {C.STALE}:
             # TODO: Custom decrement functionality and not just reset
             self._ttl.set(self._params.initial_value, key)
 
-    def constant(self, x, c=1):
-        return c
+    def linear(self, x, factor=1):
+        return factor
 
-    def linear(self, x, c=1/5):
-        return x*c
+    def scalar(self, x, factor=1/5):
+        return x*factor
 
-    def polynomial(self, x, c=1/10):
-        return x**c
+    def power(self, x, factor=1/10):
+        return x**factor
 
-    def exponential(self, x, c=1.1):
-        return min(c**x, self._max_value)
+    def exponential(self, x, factor=1.1):
+        return min(factor**x, self._params.max_value)
