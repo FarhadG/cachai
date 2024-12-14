@@ -9,7 +9,7 @@ import cachai.simulator.generators.traffic_generator as TrafficGenerator
 import cachai.simulator.generators.feature_generator as FeatureGenerator
 
 
-class AdvancedSimulator():
+class TrafficSimulator():
     DF_COLUMNS = [C.TIMESTAMP, C.OPERATION, C.RECORD, C.PAYLOAD]
     SUPPORTED_OPERATIONS = [C.CREATE, C.READ, C.UPDATE, C.DELETE, C.DATA_CHANGED]
 
@@ -120,7 +120,7 @@ class AdvancedSimulator():
         self.features_df[C.Y_TRUE] = self.run_phase_df[C.Y_TRUE]
 
 
-class CustomAdvancedSimulator(AdvancedSimulator):
+class CustomTrafficSimulator(TrafficSimulator):
 
     def sample_operations(self):
         return TrafficGenerator.sample_operations(

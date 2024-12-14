@@ -5,7 +5,7 @@ import cachai.utils.constants as C
 from cachai.utils.logger import create_logger
 from cachai.core.strategies.base_strategy import BaseStrategy
 from cachai.core.strategies.debugger_strategy import DebuggerStrategy
-from cachai.core.strategies.heuristics_strategy import AggregrateStrategy
+from cachai.core.strategies.aggregate_strategy import AggregrateStrategy, IncrementStrategy
 
 
 class Advisor(BaseStrategy):
@@ -37,5 +37,7 @@ def strategy_from_config(config):
         return DebuggerStrategy(params)
     elif name == C.AGGREGATE_STRATEGY:
         return AggregrateStrategy(params)
+    elif name == C.INCREMENT_STRATEGY:
+        return IncrementStrategy(params)
     else:
         raise ValueError(f'Unknown strategy type: {name}')

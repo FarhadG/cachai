@@ -1,6 +1,6 @@
 import cachai.utils.models as M
 import cachai.utils.constants as C
-from cachai.core.strategies.heuristics_strategy import AggregrateStrategy
+from cachai.core.strategies.aggregate_strategy import AggregrateStrategy
 import config.base_config as BaseConfig
 
 aggregate_experiments_configs = [

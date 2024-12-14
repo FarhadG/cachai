@@ -38,7 +38,6 @@ def run_experiment(config: M.ExperimentConfig):
         advisor.observe(observation_time, observation_type, key)
 
         loss = evaluate_loss(np.array([y_true]), np.array([y_pred]))
-
         experiment_logger.log(M.ExperimentLogSchema(
             **loss,
             experiment_name=experiment_name,

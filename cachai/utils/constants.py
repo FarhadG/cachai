@@ -56,6 +56,7 @@ CACHE_SERVE_TOTAL = 'cache_serve_total'
 # strategy names
 DEBUGGER_STRATEGY = 'DebuggerStrategy'
 AGGREGATE_STRATEGY = 'AggregrateStrategy'
+INCREMENT_STRATEGY = 'IncrementStrategy'
 
 # supported operations
 CREATE = 'CREATE'
