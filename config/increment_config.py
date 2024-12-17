@@ -19,13 +19,13 @@ for i in np.arange(0, 2, 0.25):
         'function_type': 'scalar',
         'factor': i
     })
-for i in np.arange(0, 2, 0.25):
+for i in np.arange(0, 1, 0.25):
     increment_experiments_configs.append({
         'experiment_name': f'Power {i}',
         'function_type': 'power',
         'factor': i
     })
-for i in np.arange(0, 2, 0.25):
+for i in np.arange(0, 1, 0.25):
     increment_experiments_configs.append({
         'experiment_name': f'Exponential {i}',
         'function_type': 'exponential',
