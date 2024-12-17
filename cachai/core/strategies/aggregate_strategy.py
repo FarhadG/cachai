@@ -28,6 +28,7 @@ class AggregrateStrategy(BaseStrategy):
         max_value: float | None = 1e10
 
     def __init__(self, params: Params):
+        super().__init__()
         self._params = params
         self._buffer = KeyedBuffer(params)
         self._ttl = KeyedDict(KeyedDict.Params(
@@ -40,42 +41,51 @@ class AggregrateStrategy(BaseStrategy):
 
     def update(self, observation_time, observation_type, key, stored_value, y_feedback):
         self._buffer.append(y_feedback, key)
-        aggregate_function = getattr(self, self._params.function_type, None)
+        aggregate_function = getattr(AggregrateStrategy, self._params.function_type, None)
         if aggregate_function is None:
             raise ValueError(f'Invalid function type: {self._params.function_type}')
         buffer_batch = self._buffer.get(key)
-        aggregated_value = aggregate_function(buffer_batch)
+        aggregated_value = aggregate_function(buffer_batch, self._params)
         self._ttl.set(math.ceil(aggregated_value), key)
 
-    def constant(self, batch):
-        return self._params.initial_value
+    @staticmethod
+    def constant(batch, params):
+        return params.initial_value
 
-    def arithmetic_mean(self, batch):
+    @staticmethod
+    def arithmetic_mean(batch, params):
         return np.mean(batch)
 
-    def ewma(self, batch):
-        ewma_alpha = self._params.ewma_alpha or 0.5
+    @staticmethod
+    def ewma(batch, params):
+        ewma_alpha = params.ewma_alpha or 0.5
         weights = (1-ewma_alpha)**np.arange(len(batch)-1, -1, -1)
         return np.average(batch, weights=weights)
 
-    def min(self, batch):
+    @staticmethod
+    def min(batch, params):
         return min(batch)
 
-    def max(self, batch):
+    @staticmethod
+    def max(batch, params):
         return max(batch)
 
-    def median(self, batch):
+    @staticmethod
+    def median(batch, params):
         return np.median(batch)
 
-    def mode(self, batch):
+    @staticmethod
+    def mode(batch, params):
         return np.bincount(batch).argmax()
 
-    def update_risk(self, batch):
+    @staticmethod
+    def update_risk(batch, params):
         # TODO: try different avg functions
-        mu = max(0.1, self.arithmetic_mean(batch))
-        update_risk_threshold = self._params.update_risk_threshold
+        mu = max(0.1, AggregrateStrategy.arithmetic_mean(batch, params))
+        update_risk_threshold = params.update_risk_threshold
         return -np.log(1-update_risk_threshold)*mu
 
-    def calculate_update_risk(self, mu, t):
+    @staticmethod
+    def calculate_update_risk(mu, t):
         # TODO: Validate this function from paper
         return 1-np.exp(-(1/mu)*t)

@@ -33,7 +33,7 @@ class IncrementStrategy(BaseStrategy):
         return self._ttl.get(key)
 
     def update(self, observation_time, observation_type, key, stored_value, y_feedback):
-        increment_function = getattr(self, self._params.function_type, None)
+        increment_function = getattr(IncrementStrategy, self._params.function_type, None)
         if increment_function is None:
             raise ValueError(f'Invalid function type: {self._params.function_type}')
         # Is this logic what we want for HIT, MISS, EXPIRED, STALE, VALID_TTL
@@ -48,20 +48,24 @@ class IncrementStrategy(BaseStrategy):
                 ttl_to_increment = max(y_feedback - current_ttl, current_ttl)
             else:
                 ttl_to_increment = current_ttl
-            updated_ttl = current_ttl + increment_function(ttl_to_increment, self._params.factor)
+            updated_ttl = current_ttl + increment_function(ttl_to_increment, self._params)
             self._ttl.set(updated_ttl, key)
         elif observation_type in {C.STALE}:
             # TODO: Custom decrement functionality and not just reset
             self._ttl.set(self._params.initial_value, key)
 
-    def linear(self, x, factor=1):
-        return factor
+    @staticmethod
+    def linear(x, params):
+        return params.factor
 
-    def scalar(self, x, factor=1/5):
-        return x*factor
+    @staticmethod
+    def scalar(x, params):
+        return x*params.factor
 
-    def power(self, x, factor=1/10):
-        return x**factor
+    @staticmethod
+    def power(x, params):
+        return x**params.factor
 
-    def exponential(self, x, factor=1.1):
-        return min(factor**x, self._params.max_value)
+    @staticmethod
+    def exponential(x, params):
+        return min(params.factor**x, params.max_value)
