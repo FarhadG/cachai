@@ -5,7 +5,8 @@ from pydantic import BaseModel, create_model
 
 import cachai.utils.constants as C
 from cachai.core.strategies.debugger_strategy import DebuggerStrategy
-from cachai.core.strategies.aggregate_strategy import AggregrateStrategy, IncrementStrategy
+from cachai.core.strategies.aggregate_strategy import AggregrateStrategy
+from cachai.core.strategies.increment_strategy import IncrementStrategy
 
 LossSchema = create_model('LossSchema', **OrderedDict([
     (C.RMSE, (float, ...)),

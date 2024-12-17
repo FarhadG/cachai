@@ -2,8 +2,8 @@ import numpy as np
 
 import cachai.utils.models as M
 import cachai.utils.constants as C
-from cachai.core.strategies.aggregate_strategy import IncrementStrategy
 import config.base_config as BaseConfig
+from cachai.core.strategies.increment_strategy import IncrementStrategy
 
 increment_experiments_configs = []
 

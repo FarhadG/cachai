@@ -1,11 +1,10 @@
-import numpy as np
-
 import cachai.utils.models as M
 import cachai.utils.constants as C
 from cachai.utils.logger import create_logger
 from cachai.core.strategies.base_strategy import BaseStrategy
 from cachai.core.strategies.debugger_strategy import DebuggerStrategy
-from cachai.core.strategies.aggregate_strategy import AggregrateStrategy, IncrementStrategy
+from cachai.core.strategies.aggregate_strategy import AggregrateStrategy
+from cachai.core.strategies.increment_strategy import IncrementStrategy
 
 
 class Advisor(BaseStrategy):
