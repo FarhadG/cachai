@@ -26,11 +26,13 @@ def run_experiment(config: M.ExperimentConfig):
     simulator = TTLSimulator(config.simulator_config, output_dir)
 
     for i in range(config.simulator_config.operations_count):
+        # prediction
         key, X, y_true = simulator.generate()
-        y_pred = cachai.predict(X, key)
+        y_pred = cachai.predict(key, {C.X: X, C.Y_TRUE: y_true})
+        # write
         initial_time = datetime.timedelta(seconds=0)
         cachai.observe(initial_time, C.ObservationType.WRITE.value, key, {C.Y_PRED: y_pred})
-
+        # feedback
         observation_time, observation_type, hits = simulator.feedback(y_true, y_pred)
         for time in range(int(observation_time.total_seconds())):
             if random.random() < config.simulator_config.hit_rate:

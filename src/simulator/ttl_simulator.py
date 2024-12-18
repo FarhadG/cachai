@@ -39,8 +39,5 @@ class TTLSimulator:
         key, mean, var = self._target_params_options[target_param_index]
         mean_abs = np.abs(np.random.normal(mean, var))
         y_true = round(mean_abs, 3)
-        if self._config.debug:
-            X = np.array([y_true])
-        else:
-            X = feature_generator.generate_feature(y_true)
+        X = feature_generator.generate_feature(y_true)
         return key, X, y_true

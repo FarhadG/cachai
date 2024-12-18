@@ -16,7 +16,7 @@ class ObservedKeyValue:
 class BaseStrategy(ABC):
 
     @abstractmethod
-    def predict(self, X, key=None) -> float:
+    def predict(self, key, info={}) -> float:
         pass
 
     def observe(self, observation_time, observation_type, key, info):
