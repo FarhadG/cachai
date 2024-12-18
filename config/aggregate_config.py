@@ -1,6 +1,6 @@
-import cachai.utils.models as M
-import cachai.utils.constants as C
-from cachai.core.strategies.aggregate_strategy import AggregrateStrategy
+import src.utils.models as M
+import src.utils.constants as C
+from src.core.strategies.aggregate_strategy import AggregrateStrategy
 import config.base_config as BaseConfig
 
 aggregate_experiments_configs = [
@@ -42,7 +42,7 @@ for config in aggregate_experiments_configs:
                 record_mean_range=BaseConfig.record_mean_range,
                 record_var_range=BaseConfig.record_var_range
             ),
-            advisor_config=M.AdvisorConfig(
+            cachai_config=M.CachaiConfig(
                 strategy_config=M.StrategyConfig(
                     name=C.AGGREGATE_STRATEGY,
                     params=AggregrateStrategy.Params(

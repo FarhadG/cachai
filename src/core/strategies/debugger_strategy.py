@@ -1,9 +1,9 @@
 import numpy as np
 from pydantic import BaseModel
 
-import cachai.utils.models as M
-import cachai.utils.constants as C
-from cachai.core.strategies.base_strategy import BaseStrategy
+import src.utils.models as M
+import src.utils.constants as C
+from src.core.strategies.base_strategy import BaseStrategy
 
 
 class DebuggerStrategy(BaseStrategy):

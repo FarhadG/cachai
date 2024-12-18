@@ -3,10 +3,10 @@ from collections import OrderedDict
 from typing import Literal, Optional
 from pydantic import BaseModel, create_model
 
-import cachai.utils.constants as C
-from cachai.core.strategies.debugger_strategy import DebuggerStrategy
-from cachai.core.strategies.aggregate_strategy import AggregrateStrategy
-from cachai.core.strategies.increment_strategy import IncrementStrategy
+import src.utils.constants as C
+from src.core.strategies.debugger_strategy import DebuggerStrategy
+from src.core.strategies.aggregate_strategy import AggregrateStrategy
+from src.core.strategies.increment_strategy import IncrementStrategy
 
 LossSchema = create_model('LossSchema', **OrderedDict([
     (C.RMSE, (float, ...)),
@@ -42,7 +42,7 @@ ExperimentLogSchema = create_model('ExperimentLogSchema', **OrderedDict([
     (C.MBE, (float, ...)),
 ]))
 
-AdvisorLogSchema = create_model('AdvisorLogSchema', **OrderedDict([
+CachaiLogSchema = create_model('CachaiLogSchema', **OrderedDict([
     (C.OBSERVATION_TIME, (datetime.timedelta, ...)),
     (C.OBSERVATION_TYPE, (str, ...)),
     (C.KEY, (str, ...)),
@@ -72,12 +72,12 @@ class StrategyConfig(BaseModel):
     ] = None
 
 
-class AdvisorConfig(BaseModel):
+class CachaiConfig(BaseModel):
     strategy_config: StrategyConfig
 
 
 class ExperimentConfig(BaseModel):
     experiment_name: str
     output_dir: Optional[str] = 'results'
-    advisor_config: AdvisorConfig
+    cachai_config: CachaiConfig
     simulator_config: TTLSimulatorConfig

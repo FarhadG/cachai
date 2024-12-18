@@ -1,9 +1,9 @@
 import numpy as np
 
-import cachai.utils.models as M
-import cachai.utils.constants as C
+import src.utils.models as M
+import src.utils.constants as C
 import config.base_config as BaseConfig
-from cachai.core.strategies.increment_strategy import IncrementStrategy
+from src.core.strategies.increment_strategy import IncrementStrategy
 
 increment_experiments_configs = []
 
@@ -44,7 +44,7 @@ for config in increment_experiments_configs:
                 record_mean_range=BaseConfig.record_mean_range,
                 record_var_range=BaseConfig.record_var_range
             ),
-            advisor_config=M.AdvisorConfig(
+            cachai_config=M.CachaiConfig(
                 strategy_config=M.StrategyConfig(
                     name=C.INCREMENT_STRATEGY,
                     params=IncrementStrategy.Params(

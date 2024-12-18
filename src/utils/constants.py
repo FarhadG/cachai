@@ -3,7 +3,6 @@ from typing import Literal
 
 # general
 CACHAI = 'Cachai'
-ADVISOR = 'Advisor'
 KEY = 'key'
 
 # observation types
@@ -33,7 +32,7 @@ RECORD = 'record'
 PAYLOAD = 'payload'
 
 # logger names
-ADVISOR_LOGGER = 'advisor_logger'
+CACHAI_LOGGER = 'cachai_logger'
 EXPERIMENT_LOGGER = 'experiment_logger'
 
 # loss metrics

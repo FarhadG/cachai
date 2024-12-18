@@ -1,10 +1,10 @@
 from typing import Literal
 from pydantic import BaseModel
 
-import cachai.utils.models as M
-import cachai.utils.constants as C
-from cachai.core.strategies.base_strategy import BaseStrategy
-from cachai.utils.data_structures import KeyedDict
+import src.utils.models as M
+import src.utils.constants as C
+from src.core.strategies.base_strategy import BaseStrategy
+from src.utils.data_structures import KeyedDict
 
 
 # TODO: per key, use the highest counts?
@@ -22,7 +22,7 @@ class IncrementStrategy(BaseStrategy):
         max_value: float | None = 1e10
 
     def __init__(self, params: Params):
-        super().__init__()
+        self._observed_keys = {}
         self._params = params
         self._ttl = KeyedDict(KeyedDict.Params(
             per_key=params.per_key,

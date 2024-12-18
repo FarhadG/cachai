@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from cachai.utils import constants as C
+from src.utils import constants as C
 
 
 def generate_y_true(df):

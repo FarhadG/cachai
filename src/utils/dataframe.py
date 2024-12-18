@@ -2,7 +2,7 @@ import glob
 import json
 import pandas as pd
 
-from cachai.utils import constants as C
+from src.utils import constants as C
 
 
 def build_metadata_df(config_glob_path):
@@ -12,10 +12,10 @@ def build_metadata_df(config_glob_path):
         dir_path = '/'.join(config_path.split('/')[:-1])
         logger_paths = glob.glob(f'{dir_path}/**/*.csv', recursive=True)
 
-        advisor_logger_path = [logger_path for logger_path in logger_paths if C.ADVISOR_LOGGER in logger_path]
+        cachai_logger_path = [logger_path for logger_path in logger_paths if C.CACHAI_LOGGER in logger_path]
         experiment_logger_path = [logger_path for logger_path in logger_paths if C.EXPERIMENT_LOGGER in logger_path]
 
-        if len(advisor_logger_path) != 1 or len(experiment_logger_path) != 1:
+        if len(cachai_logger_path) != 1 or len(experiment_logger_path) != 1:
             raise ValueError(f'Expected one file with loggers')
 
         with open(config_path) as f:
@@ -24,10 +24,10 @@ def build_metadata_df(config_glob_path):
         experiment_name = config[C.EXPERIMENT_NAME]
         metadata.append([
             experiment_name,
-            advisor_logger_path[0],
+            cachai_logger_path[0],
             experiment_logger_path[0]
         ])
-    return pd.DataFrame(metadata, columns=[C.EXPERIMENT_NAME, C.ADVISOR_LOGGER, C.EXPERIMENT_LOGGER])
+    return pd.DataFrame(metadata, columns=[C.EXPERIMENT_NAME, C.CACHAI_LOGGER, C.EXPERIMENT_LOGGER])
 
 
 def build_df(metadata_df, logger_name, callback=None):

@@ -3,8 +3,8 @@ import numpy as np
 from typing import Literal
 from pydantic import BaseModel
 
-from cachai.core.strategies.base_strategy import BaseStrategy
-from cachai.utils.data_structures import KeyedBuffer, KeyedDict
+from src.core.strategies.base_strategy import BaseStrategy
+from src.utils.data_structures import KeyedBuffer, KeyedDict
 
 
 # TODO: per key, use the highest counts?
@@ -28,7 +28,7 @@ class AggregrateStrategy(BaseStrategy):
         max_value: float | None = 1e10
 
     def __init__(self, params: Params):
-        super().__init__()
+        self._observed_keys = {}
         self._params = params
         self._buffer = KeyedBuffer(params)
         self._ttl = KeyedDict(KeyedDict.Params(

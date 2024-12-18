@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
 
-import cachai.utils.models as M
-import cachai.utils.constants as C
-import cachai.simulator.generators.record_generator as RecordGenerator
-import cachai.simulator.generators.record_sampler as RecordSampler
-import cachai.simulator.generators.traffic_generator as TrafficGenerator
-import cachai.simulator.generators.feature_generator as FeatureGenerator
+import src.utils.models as M
+import src.utils.constants as C
+import src.simulator.generators.record_generator as RecordGenerator
+import src.simulator.generators.record_sampler as RecordSampler
+import src.simulator.generators.traffic_generator as TrafficGenerator
+import src.simulator.generators.feature_generator as FeatureGenerator
 
 
 class TrafficSimulator():

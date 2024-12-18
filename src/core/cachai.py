@@ -1,20 +1,20 @@
-import cachai.utils.models as M
-import cachai.utils.constants as C
-from cachai.utils.logger import create_logger
-from cachai.core.strategies.base_strategy import BaseStrategy
-from cachai.core.strategies.debugger_strategy import DebuggerStrategy
-from cachai.core.strategies.aggregate_strategy import AggregrateStrategy
-from cachai.core.strategies.increment_strategy import IncrementStrategy
+import src.utils.models as M
+import src.utils.constants as C
+from src.utils.logger import create_logger
+from src.core.strategies.base_strategy import BaseStrategy
+from src.core.strategies.debugger_strategy import DebuggerStrategy
+from src.core.strategies.aggregate_strategy import AggregrateStrategy
+from src.core.strategies.increment_strategy import IncrementStrategy
 
 
-class Advisor(BaseStrategy):
+class Cachai(BaseStrategy):
 
     def __init__(self, config, output_dir):
         self._strategy = strategy_from_config(config)
-        self._advisor_logger = create_logger(
-            name=C.ADVISOR_LOGGER,
+        self._cachai_logger = create_logger(
+            name=C.CACHAI_LOGGER,
             output_dir=output_dir,
-            schema=M.AdvisorLogSchema
+            schema=M.CachaiLogSchema
         )
 
     def predict(self, X, key=None):
@@ -22,7 +22,7 @@ class Advisor(BaseStrategy):
 
     def observe(self, observation_time, observation_type, key, info={}):
         self._strategy.observe(observation_time, observation_type, key, info)
-        self._advisor_logger.log(M.AdvisorLogSchema(
+        self._cachai_logger.log(M.CachaiLogSchema(
             observation_time=observation_time,
             observation_type=observation_type,
             key=key,

@@ -2,13 +2,13 @@ import datetime
 import random
 import numpy as np
 
-import cachai.utils.models as M
-import cachai.utils.constants as C
-from cachai.core.advisor import Advisor
-from cachai.simulator.ttl_simulator import TTLSimulator
-from cachai.utils.logger import create_logger
-from cachai.utils.evaluation import evaluate_loss
-from cachai.utils.file_system import standardize_path, write_config
+import src.utils.models as M
+import src.utils.constants as C
+from src.core.cachai import Cachai
+from src.simulator.ttl_simulator import TTLSimulator
+from src.utils.logger import create_logger
+from src.utils.evaluation import evaluate_loss
+from src.utils.file_system import standardize_path, write_config
 
 
 def run_experiment(config: M.ExperimentConfig):
@@ -22,20 +22,20 @@ def run_experiment(config: M.ExperimentConfig):
         schema=M.ExperimentLogSchema
     )
 
-    advisor = Advisor(config.advisor_config, output_dir)
+    cachai = Cachai(config.cachai_config, output_dir)
     simulator = TTLSimulator(config.simulator_config, output_dir)
 
     for i in range(config.simulator_config.operations_count):
         key, X, y_true = simulator.generate()
-        y_pred = advisor.predict(X, key)
+        y_pred = cachai.predict(X, key)
         initial_time = datetime.timedelta(seconds=0)
-        advisor.observe(initial_time, C.ObservationType.WRITE.value, key, {C.Y_PRED: y_pred})
+        cachai.observe(initial_time, C.ObservationType.WRITE.value, key, {C.Y_PRED: y_pred})
 
         observation_time, observation_type, hits = simulator.feedback(y_true, y_pred)
         for time in range(int(observation_time.total_seconds())):
             if random.random() < config.simulator_config.hit_rate:
-                advisor.observe(time, C.ObservationType.HIT, key, {C.Y_PRED: y_pred})
-        advisor.observe(observation_time, observation_type, key)
+                cachai.observe(time, C.ObservationType.HIT, key, {C.Y_PRED: y_pred})
+        cachai.observe(observation_time, observation_type, key)
 
         loss = evaluate_loss(np.array([y_true]), np.array([y_pred]))
         experiment_logger.log(M.ExperimentLogSchema(

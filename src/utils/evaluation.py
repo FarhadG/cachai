@@ -5,8 +5,8 @@ from pydantic import create_model
 from sklearn.calibration import check_consistent_length
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error
 
-import cachai.utils.constants as C
-import cachai.utils.models as M
+import src.utils.constants as C
+import src.utils.models as M
 
 
 def evaluate_cache_metrics(df):
@@ -99,16 +99,16 @@ def evaluate_experiment_group(df, groupby=[C.EXPERIMENT_NAME]):
         .reset_index(level=0)
 
 
-def evaluate_advisor(df):
+def evaluate_cachai(df):
     output = []
     cache_metrics = evaluate_cache_metrics(df)
     output.append(cache_metrics)
     return pd.DataFrame(output, columns=M.MetricsSchema.__fields__.keys())
 
 
-def evaluate_advisor_group(df, groupby=[C.EXPERIMENT_NAME]):
+def evaluate_cachai_group(df, groupby=[C.EXPERIMENT_NAME]):
     return df \
         .groupby(groupby) \
-        .apply(evaluate_advisor) \
+        .apply(evaluate_cachai) \
         .sort_values(by=C.EXPERIMENT_NAME) \
         .reset_index(level=0)

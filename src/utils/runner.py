@@ -3,8 +3,8 @@ from typing import List
 from multiprocessing import cpu_count
 from concurrent.futures import ProcessPoolExecutor, wait
 
-import cachai.utils.models as M
-from cachai.utils.timer import timer
+import src.utils.models as M
+from src.utils.timer import timer
 
 
 def run_parallel(func, experiments, max_workers=1):

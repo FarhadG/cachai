@@ -1,9 +1,9 @@
 import datetime
 import numpy as np
 
-import cachai.utils.models as M
-import cachai.utils.constants as C
-from cachai.simulator.generators import feature_generator
+import src.utils.models as M
+import src.utils.constants as C
+from src.simulator.generators import feature_generator
 
 
 class TTLSimulator:

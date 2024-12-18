@@ -3,7 +3,7 @@ import numpy as np
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
-import cachai.utils.constants as C
+import src.utils.constants as C
 
 
 @dataclass
@@ -14,9 +14,6 @@ class ObservedKeyValue:
 
 
 class BaseStrategy(ABC):
-
-    def __init__(self):
-        self._observed_keys = {}
 
     @abstractmethod
     def predict(self, X, key=None) -> float:

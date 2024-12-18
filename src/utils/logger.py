@@ -2,7 +2,7 @@ import os
 import logging
 from pydantic import BaseModel
 
-from cachai.utils.file_system import create_dir
+from src.utils.file_system import create_dir
 
 
 def create_logger(

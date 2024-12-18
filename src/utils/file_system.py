@@ -1,7 +1,7 @@
 import os
 
-import cachai.utils.models as M
-import cachai.utils.constants as C
+import src.utils.models as M
+import src.utils.constants as C
 
 
 def create_dir(dir_path, verbose=False):
