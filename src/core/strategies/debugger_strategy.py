@@ -32,7 +32,7 @@ class DebuggerStrategy(BaseStrategy):
         super().__init__(params, output_dir)
         n_features = 1
         dummy_X = np.zeros((1, n_features))
-        dummy_y = np.array([1])
+        dummy_y = np.array([0])
         self._scaler = IncrementalStandardScaler()
         self._scaler.partial_fit(dummy_X)
         # TODO: hyper-parameter tuning
@@ -49,14 +49,15 @@ class DebuggerStrategy(BaseStrategy):
         self._model.partial_fit(dummy_X, dummy_y)
 
     def predict(self, key, X, info={}):
-        X_scaled = self._scaler.transform(X)
-        prediction = self._model.predict([X_scaled])[0]
+        X_scaled = self._scaler.fit_transform(X)
+        prediction = self._model.predict(X_scaled)[0]
         return prediction
 
     def update(self, observation_time, observation_type, key, stored_value, y_feedback, info={}):
-        X = self._scaler.transform(info[C.X])
+        X = info[C.X]
+        X_scaled = self._scaler.transform(X)
         y = info[C.Y_TRUE]
-        self._model.partial_fit(X, y)
+        self._model.partial_fit(X_scaled, [y])
 
 
 class IncrementalStandardScaler(BaseEstimator, TransformerMixin):

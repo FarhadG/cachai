@@ -27,7 +27,9 @@ class TTLSimulator:
             key, mean, var = self._target_params_options[target_param_index]
             mean_abs = np.abs(np.random.normal(mean, var))
             y_true = round(mean_abs, 3)
-            X = feature_generator.generate_feature(y_true)
+            # TODO: proper shaping of features
+            X = feature_generator.generate_feature(y_true).reshape(-1, 1)
+            X = np.array([[100]])
             data.append((key, X, y_true))
         self.data = pd.DataFrame(data, columns=[C.KEY, C.X, C.Y_TRUE])
         self.data.to_csv(f'{output_dir}/simulation.csv', index=False)
