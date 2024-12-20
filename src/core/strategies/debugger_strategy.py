@@ -8,7 +8,7 @@ import src.utils.constants as C
 from src.core.strategies.base_strategy import BaseStrategy
 
 
-class DebuggerStrategy(BaseStrategy):
+class _DebuggerStrategy(BaseStrategy):
 
     class Params(BaseModel):
         offset: int = 0
@@ -23,7 +23,7 @@ class DebuggerStrategy(BaseStrategy):
         pass
 
 
-class _DebuggerStrategy(BaseStrategy):
+class DebuggerStrategy(BaseStrategy):
 
     class Params(BaseModel):
         offset: int = 0
@@ -48,15 +48,15 @@ class _DebuggerStrategy(BaseStrategy):
         self._model = SGDRegressor(**base_params)
         self._model.partial_fit(dummy_X, dummy_y)
 
-    def update(self, observation_time, observation_type, key, stored_value, y_feedback, info):
-        X = self._scaler.transform(info[C.X])
-        y = info[C.Y_TRUE]
-        self._model.partial_fit(X, y)
-
-    def predict(self, key, X):
+    def predict(self, key, X, info={}):
         X_scaled = self._scaler.transform(X)
         prediction = self._model.predict([X_scaled])[0]
         return prediction
+
+    def update(self, observation_time, observation_type, key, stored_value, y_feedback, info={}):
+        X = self._scaler.transform(info[C.X])
+        y = info[C.Y_TRUE]
+        self._model.partial_fit(X, y)
 
 
 class IncrementalStandardScaler(BaseEstimator, TransformerMixin):

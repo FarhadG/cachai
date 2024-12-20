@@ -50,6 +50,4 @@ class BaseStrategy(ABC):
             stored_value.hits += 1
         elif observation_type in {C.STALE, C.MISS, C.VALID_TTL}:
             y_feedback = (observation_time - stored_value.stored_time).total_seconds()
-            self.update(observation_time, observation_type, key, stored_value, y_feedback, {
-                C.X: info[C.X],
-            })
+            self.update(observation_time, observation_type, key, stored_value, y_feedback, info)
