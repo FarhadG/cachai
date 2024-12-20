@@ -25,19 +25,22 @@ def run_experiment(config: M.ExperimentConfig):
     cachai = Cachai(config.cachai_config, output_dir)
     simulator = TTLSimulator(config.simulator_config, output_dir)
 
-    for i in range(config.simulator_config.operations_count):
-        # prediction
-        key, X, y_true = simulator.generate()
-        y_pred = cachai.predict(key, {C.X: X, C.Y_TRUE: y_true})
+    # TODO: standardize between key/record value/payload naming
+    for i in range(len(simulator.data)):
+        key, X, y_true = simulator.data.iloc[i]
+        # TODO: figure out how to pass the right info down for observe and predict
+        info = {C.Y_TRUE: y_true, C.X: X}
+        y_pred = cachai.predict(key, X, info)
+        info = {C.Y_TRUE: y_true, C.Y_PRED: y_pred, C.X: X}
         # write
         initial_time = datetime.timedelta(seconds=0)
-        cachai.observe(initial_time, C.ObservationType.WRITE.value, key, {C.Y_PRED: y_pred})
+        cachai.observe(initial_time, C.WRITE, key, info)
         # feedback
         observation_time, observation_type, hits = simulator.feedback(y_true, y_pred)
         for time in range(int(observation_time.total_seconds())):
             if random.random() < config.simulator_config.hit_rate:
-                cachai.observe(time, C.ObservationType.HIT, key, {C.Y_PRED: y_pred})
-        cachai.observe(observation_time, observation_type, key)
+                cachai.observe(time, C.HIT, key, info)
+        cachai.observe(observation_time, observation_type, key, info)
 
         loss = evaluate_loss(np.array([y_true]), np.array([y_pred]))
         experiment_logger.log(M.ExperimentLogSchema(

@@ -48,6 +48,16 @@ CachaiLogSchema = create_model('CachaiLogSchema', **OrderedDict([
     (C.KEY, (str, ...)),
 ]))
 
+StrategyLogSchema = create_model('StrategyLogSchema', **OrderedDict([
+    (C.OBSERVATION_TIME, (datetime.timedelta, ...)),
+    (C.OBSERVATION_TYPE, (str, ...)),
+    (C.KEY, (str, ...)),
+    (C.HITS, (int, ...)),
+    (C.Y_TRUE, (float, ...)),
+    (C.Y_PRED, (float, ...)),
+    (C.Y_FEEDBACK, (float, ...)),
+]))
+
 
 class TTLSimulatorConfig(BaseModel):
     debug: bool = False

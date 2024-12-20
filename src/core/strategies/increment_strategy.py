@@ -21,18 +21,17 @@ class IncrementStrategy(BaseStrategy):
         factor: float = 1
         max_value: float | None = 1e10
 
-    def __init__(self, params: Params):
-        self._observed_keys = {}
-        self._params = params
+    def __init__(self, params: Params, output_dir):
+        super().__init__(params, output_dir)
         self._ttl = KeyedDict(KeyedDict.Params(
             per_key=params.per_key,
             initial_value=params.initial_value
         ))
 
-    def predict(self, key, info={}):
+    def predict(self, key, X, info={}):
         return self._ttl.get(key)
 
-    def update(self, observation_time, observation_type, key, stored_value, y_feedback):
+    def update(self, observation_time, observation_type, key, stored_value, y_feedback, info):
         increment_function = getattr(IncrementStrategy, self._params.function_type, None)
         if increment_function is None:
             raise ValueError(f'Invalid function type: {self._params.function_type}')

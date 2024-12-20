@@ -24,17 +24,18 @@ OBSERVATION_TIME = 'observation_time'
 X = 'X'
 Y_TRUE = 'y_true'
 Y_PRED = 'y_pred'
+Y_FEEDBACK = 'y_feedback'
 HITS = 'hits'
 DEBUG = 'debug'
 TIMESTAMP = 'timestamp'
 OPERATION = 'operation'
 RECORD = 'record'
 PAYLOAD = 'payload'
-
+STORED_KEY_DATA = 'stored_key_data'
 # logger names
 CACHAI_LOGGER = 'cachai_logger'
 EXPERIMENT_LOGGER = 'experiment_logger'
-
+STRATEGY_LOGGER = 'strategy_logger'
 # loss metrics
 RMSE = 'rmse'
 MAE = 'mae'
@@ -63,12 +64,3 @@ READ = 'READ'
 UPDATE = 'UPDATE'
 DELETE = 'DELETE'
 DATA_CHANGED = 'DATA_CHANGED'
-
-
-class ObservationType(Enum):
-    HIT = HIT
-    MISS = MISS
-    STALE = STALE
-    VALID_TTL = VALID_TTL
-    WRITE = WRITE
-    READ_WRITE = READ_WRITE
