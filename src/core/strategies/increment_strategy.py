@@ -28,7 +28,7 @@ class IncrementStrategy(BaseStrategy):
             initial_value=params.initial_value
         ))
 
-    def predict(self, key, X, info={}):
+    def predict(self, key, info={}):
         return self._ttl.get(key)
 
     def update(self, observation_time, observation_type, key, stored_value, y_feedback, info):

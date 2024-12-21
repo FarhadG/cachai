@@ -29,10 +29,10 @@ def run_experiment(config: M.ExperimentConfig):
     for i in range(len(simulator.data)):
         key, X, y_true = simulator.data.iloc[i]
         # TODO: figure out how to pass the right info down for observe and predict
-        info = {C.Y_TRUE: y_true, C.X: X}
-        y_pred = cachai.predict(key, X, info)
-        info = {C.Y_TRUE: y_true, C.Y_PRED: y_pred, C.X: X}
+        info = {C.X: X, C.Y_TRUE: y_true}
+        y_pred = cachai.predict(key, info)
         # write
+        info[C.Y_PRED] = y_pred
         initial_time = datetime.timedelta(seconds=0)
         cachai.observe(initial_time, C.WRITE, key, info)
         # feedback

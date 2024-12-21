@@ -17,8 +17,8 @@ class Cachai():
             schema=M.CachaiLogSchema
         )
 
-    def predict(self, key, X, info={}):
-        return self._strategy.predict(key, X, info)
+    def predict(self, key, info={}):
+        return self._strategy.predict(key, info)
 
     def observe(self, observation_time, observation_type, key, info={}):
         self._strategy.observe(observation_time, observation_type, key, info)

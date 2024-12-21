@@ -38,16 +38,15 @@ def evaluate_cache_metrics(df):
     # - CU = (Used Cache Size / Total Cache Size) * 100
     # Cache Hit Latency: The time taken to serve a request that results in a cache hit. Use: To ensure that cache hits are served efficiently.
     # Miss Rate Decay: Definition: The rate at which the miss rate decreases over time as the cache gets populated. Use: To understand how quickly the cache becomes effective.
+    cache_hit_total = df[C.OBSERVATION_TYPE].isin([C.VALID_TTL, C.HIT]).sum()
     cache_stale_total = (df[C.OBSERVATION_TYPE] == C.STALE).sum()
     cache_miss_total = (df[C.OBSERVATION_TYPE] == C.MISS).sum()
-    cache_valid_ttl_total = (df[C.OBSERVATION_TYPE] == C.VALID_TTL).sum()
-    cache_hit_total = (df[C.OBSERVATION_TYPE] == C.HIT).sum()
 
-    total_requests = cache_hit_total + cache_stale_total + cache_miss_total + cache_valid_ttl_total
+    total_requests = cache_hit_total + cache_stale_total + cache_miss_total
     cache_serve_total = cache_hit_total + cache_stale_total
     cache_serve_rate = cache_serve_total / total_requests
-    cache_hit_precision = (cache_hit_total + cache_valid_ttl_total) / cache_serve_total if cache_serve_total else 0
-    cache_hit_accuracy = (cache_hit_total + cache_valid_ttl_total) / total_requests
+    cache_hit_precision = cache_hit_total / cache_serve_total if cache_serve_total else 0
+    cache_hit_accuracy = cache_hit_total / total_requests
     cache_stale_rate = cache_stale_total / cache_serve_total if cache_serve_total else 0
     cache_miss_rate = cache_miss_total / total_requests
 
@@ -82,7 +81,7 @@ def evaluate_loss(y_true, y_pred, round_to=3):
     ).model_dump()
 
 
-def evaluate_experiment(df):
+def evaluate_experiment_loss(df):
     output = []
     y_true = df[C.Y_TRUE].to_numpy().astype(float)
     y_pred = df[C.Y_PRED].to_numpy().astype(float)
@@ -91,24 +90,24 @@ def evaluate_experiment(df):
     return pd.DataFrame(output, columns=M.LossSchema.__fields__.keys())
 
 
-def evaluate_experiment_group(df, groupby=[C.EXPERIMENT_NAME]):
+def evaluate_experiment_loss_group(df, groupby=[C.EXPERIMENT_NAME]):
     return df \
         .groupby(groupby) \
-        .apply(evaluate_experiment) \
+        .apply(evaluate_experiment_loss) \
         .sort_values(by=C.EXPERIMENT_NAME) \
         .reset_index(level=0)
 
 
-def evaluate_cachai(df):
+def evaluate_experiment_cache_metrics(df):
     output = []
     cache_metrics = evaluate_cache_metrics(df)
     output.append(cache_metrics)
     return pd.DataFrame(output, columns=M.MetricsSchema.__fields__.keys())
 
 
-def evaluate_cachai_group(df, groupby=[C.EXPERIMENT_NAME]):
+def evaluate_experiment_cache_metrics_group(df, groupby=[C.EXPERIMENT_NAME]):
     return df \
         .groupby(groupby) \
-        .apply(evaluate_cachai) \
+        .apply(evaluate_experiment_cache_metrics) \
         .sort_values(by=C.EXPERIMENT_NAME) \
         .reset_index(level=0)

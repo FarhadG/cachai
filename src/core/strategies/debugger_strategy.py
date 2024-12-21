@@ -16,7 +16,7 @@ class _DebuggerStrategy(BaseStrategy):
     def __init__(self, params, output_dir):
         super().__init__(params, output_dir)
 
-    def predict(self, key, X, info={}):
+    def predict(self, key, info={}):
         return info[C.Y_TRUE] + self._params.offset
 
     def update(self, observation_time, observation_type, key, stored_value, y_feedback, info):
@@ -48,10 +48,10 @@ class DebuggerStrategy(BaseStrategy):
         self._model = SGDRegressor(**base_params)
         self._model.partial_fit(dummy_X, dummy_y)
 
-    def predict(self, key, X, info={}):
-        X_scaled = self._scaler.fit_transform(X)
+    def predict(self, key, info):
+        X_scaled = self._scaler.fit_transform(info[C.X])
         prediction = self._model.predict(X_scaled)[0]
-        return prediction
+        return np.round(prediction)
 
     def update(self, observation_time, observation_type, key, stored_value, y_feedback, info={}):
         X = info[C.X]
