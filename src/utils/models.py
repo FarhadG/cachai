@@ -9,6 +9,7 @@ from src.core.strategies.aggregate_strategy import AggregrateStrategy
 from src.core.strategies.increment_strategy import IncrementStrategy
 
 LossSchema = create_model('LossSchema', **OrderedDict([
+    (C.MSE, (float, ...)),
     (C.RMSE, (float, ...)),
     (C.MAE, (float, ...)),
     (C.MBE, (float, ...))

@@ -37,6 +37,7 @@ CACHAI_LOGGER = 'cachai_logger'
 EXPERIMENT_LOGGER = 'experiment_logger'
 STRATEGY_LOGGER = 'strategy_logger'
 # loss metrics
+MSE = 'mse'
 RMSE = 'rmse'
 MAE = 'mae'
 MBE = 'mbe'

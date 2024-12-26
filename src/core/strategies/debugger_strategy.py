@@ -31,13 +31,13 @@ class DebuggerStrategy(BaseStrategy):
         offset: int = 0,
         tune_hyperparams: bool = False,
         hyperparams: dict = {
-            "learning_rate": "constant",
-            "eta0": 0.01,
-            "alpha": 1e-4,
-            "penalty": "l1",
-            "tol": 1e-3,
-            "max_iter": 1,
-            "warm_start": True
+            # "learning_rate": "constant",
+            # "eta0": 0.01,
+            # "alpha": 1e-4,
+            # "penalty": "l1",
+            # "tol": 1e-3,
+            # "max_iter": 1,
+            # "warm_start": True
         }
 
     def __init__(self, params, output_dir):

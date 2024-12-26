@@ -10,6 +10,7 @@ seaborn
 tqdm
 nbstripout
 river
+optuna
 
 # not needed
 dash

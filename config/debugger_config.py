@@ -20,13 +20,13 @@ debugger_experiments = [
                     offset=0,
                     tune_hyperparams=True,
                     hyperparams={
-                        "learning_rate": "constant",
-                        "eta0": 0.01,
-                        "alpha": 1e-4,
-                        "penalty": "l1",
-                        "tol": 1e-3,
-                        "max_iter": 1,
-                        "warm_start": True
+                        'learning_rate': ['constant', 'optimal', 'invscaling', 'adaptive'],
+                        'eta0': [0.001, 0.01, 0.1],
+                        'alpha': [0.0001, 0.001, 0.01],
+                        'penalty': ['l2', 'l1', 'elasticnet'],
+                        'tol': [1e-3, 1e-4],
+                        'max_iter': [1, 5, 10, 50, 100, 1_000, 5_000, 10_000],
+                        'warm_start': [True, False],
                     },
                 )
             )
