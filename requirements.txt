@@ -9,6 +9,7 @@ ipykernel
 seaborn
 tqdm
 nbstripout
+river
 
 # not needed
 dash

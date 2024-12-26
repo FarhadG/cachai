@@ -17,7 +17,17 @@ debugger_experiments = [
             strategy_config=M.StrategyConfig(
                 name=C.DEBUGGER_STRATEGY,
                 params=DebuggerStrategy.Params(
-                    offset=0
+                    offset=0,
+                    tune_hyperparams=True,
+                    hyperparams={
+                        "learning_rate": "constant",
+                        "eta0": 0.01,
+                        "alpha": 1e-4,
+                        "penalty": "l1",
+                        "tol": 1e-3,
+                        "max_iter": 1,
+                        "warm_start": True
+                    },
                 )
             )
         )

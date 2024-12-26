@@ -61,7 +61,7 @@ StrategyLogSchema = create_model('StrategyLogSchema', **OrderedDict([
 
 class TTLSimulatorConfig(BaseModel):
     debug: bool = False
-    hit_rate: float = 0.001
+    hit_rate: float = 0.01
     operations_count: int
     records_count: int
     record_mean_range: tuple[int, int]

@@ -17,8 +17,7 @@ class ObservedKeyValue:
 
 class BaseStrategy(ABC):
 
-    def __init__(self, params, output_dir):
-        self._params = params
+    def __init__(self, output_dir: str):
         self._observed_keys = {}
         self._strategy_logger = create_logger(
             name=C.STRATEGY_LOGGER,
