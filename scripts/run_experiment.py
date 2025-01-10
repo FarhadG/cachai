@@ -1,8 +1,7 @@
+import optuna
 import datetime
 import random
 import numpy as np
-from sklearn.model_selection import GridSearchCV
-from sklearn.pipeline import Pipeline
 
 import src.utils.models as M
 import src.utils.constants as C
@@ -13,7 +12,7 @@ from src.utils.evaluation import evaluate_loss
 from src.utils.file_system import standardize_path, write_config
 
 
-def run_experiment(config: M.ExperimentConfig, hyperparams: dict = None):
+def run_experiment(config: M.ExperimentConfig):
     experiment_name = config.experiment_name
     output_dir = f'{config.output_dir}/{standardize_path(experiment_name)}'
     write_config(config, output_dir)
@@ -23,10 +22,6 @@ def run_experiment(config: M.ExperimentConfig, hyperparams: dict = None):
         output_dir=output_dir,
         schema=M.ExperimentLogSchema
     )
-
-    # Update strategy config with hyperparameters if provided
-    if hyperparams:
-        config.cachai_config.strategy_config.params.hyperparams.update(hyperparams)
 
     cachai = Cachai(config.cachai_config, output_dir)
     simulator = TTLSimulator(config.simulator_config, output_dir)
@@ -69,3 +64,46 @@ def run_experiment(config: M.ExperimentConfig, hyperparams: dict = None):
         ))
 
     return total_loss
+
+
+def debugger_strategy_tuner(config: M.ExperimentConfig):
+
+    def update_params(config, params):
+        config_clone = config.model_copy(deep=True)
+        config_clone.cachai_config.strategy_config.params = M.DebuggerStrategy.Params(**params)
+        return config_clone
+
+    def objective(trial: optuna.Trial):
+        params = {
+            'offset': 0,
+            'learning_rate': trial.suggest_categorical('learning_rate', [
+                'constant', 'optimal', 'invscaling', 'adaptive'
+            ]),
+            'eta0': trial.suggest_float('eta0', 0.001, 0.1),
+            'alpha': trial.suggest_float('alpha', 0.0001, 0.01),
+            'penalty': trial.suggest_categorical('penalty', ['l2', 'l1', 'elasticnet']),
+            'tol': trial.suggest_categorical('tol', [1e-3, 1e-4]),
+            'max_iter': trial.suggest_int('max_iter', 1, 10000),
+        }
+        updated_config = update_params(config, params)
+        result = run_experiment(updated_config)
+        return result[C.RMSE]
+
+    return objective, update_params
+
+
+def tune_hyperparameters(config: M.ExperimentConfig):
+    objective, update_params = debugger_strategy_tuner(config)
+    study = optuna.create_study(direction='minimize')
+    study.optimize(objective, n_trials=2)
+    best_hyperparams = study.best_params
+    best_score = study.best_value
+    print(f'Best hyperparameters: {best_hyperparams} with loss {best_score}')
+    config = update_params(config, best_hyperparams)
+    return config, best_hyperparams, study.trials
+
+
+def tune_experiment(config: M.ExperimentConfig):
+    if config.cachai_config.strategy_config.tune_params:
+        config, best_hyperparams, tuning_results = tune_hyperparameters(config)
+    return run_experiment(config)

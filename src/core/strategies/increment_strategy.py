@@ -22,10 +22,11 @@ class IncrementStrategy(BaseStrategy):
         max_value: float | None = 1e10
 
     def __init__(self, params: Params, output_dir):
-        super().__init__(params, output_dir)
+        super().__init__(output_dir)
+        self._params = params or self.Params()
         self._ttl = KeyedDict(KeyedDict.Params(
-            per_key=params.per_key,
-            initial_value=params.initial_value
+            per_key=self._params.per_key,
+            initial_value=self._params.initial_value
         ))
 
     def predict(self, key, info={}):

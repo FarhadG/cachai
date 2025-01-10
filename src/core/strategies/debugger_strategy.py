@@ -16,7 +16,8 @@ class _DebuggerStrategy(BaseStrategy):
         offset: int = 0
 
     def __init__(self, params, output_dir):
-        super().__init__(params, output_dir)
+        super().__init__(output_dir)
+        self._params = params or self.Params()
 
     def predict(self, key, info={}):
         return info[C.Y_TRUE] + self._params.offset
@@ -27,29 +28,34 @@ class _DebuggerStrategy(BaseStrategy):
 
 class DebuggerStrategy(BaseStrategy):
 
+    # TODO: make these params as models dumps or keep them as pydantic models
     class Params(BaseModel):
-        offset: int = 0,
-        tune_hyperparams: bool = False,
-        hyperparams: dict = {
-            "learning_rate": "adaptive",
-            "eta0": 0.097,
-            "alpha": 2e-3,
-            "penalty": "elasticnet",
-            "tol": 1e-4,
-            "max_iter": 51,
-            "warm_start": True
-        }
+        offset: int = 0
+        learning_rate: str = 'adaptive'
+        eta0: float = 0.097
+        alpha: float = 2e-3
+        penalty: str = 'elasticnet'
+        tol: float = 1e-4
+        max_iter: int = 51
 
     def __init__(self, params, output_dir):
         super().__init__(output_dir)
-        self._params = params
+        self._params = params or self.Params()
         n_features = 1
         # dummy_X = np.zeros((1, n_features))
         dummy_X = np.zeros((1, n_features))
         dummy_y = np.array([0])
         self._scaler = CustomStandardScaler()
         self._scaler.partial_fit(dummy_X)
-        self._model = SGDRegressor(**self._params.hyperparams)
+        self._model = SGDRegressor(
+            learning_rate=self._params.learning_rate,
+            eta0=self._params.eta0,
+            alpha=self._params.alpha,
+            penalty=self._params.penalty,
+            tol=self._params.tol,
+            max_iter=self._params.max_iter,
+            warm_start=True
+        )
         self._model.partial_fit(dummy_X, dummy_y)
 
     def predict(self, key, info):
