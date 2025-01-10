@@ -1,15 +1,5 @@
-import optuna
-
 import src.utils.models as M
 import src.utils.constants as C
-
-
-def tune_hyperparams(config: M.ExperimentConfig, tuner_func, run_experiment):
-    objective, update_params = tuner_func(config, run_experiment)
-    study = optuna.create_study(direction='minimize')
-    study.optimize(objective, n_trials=2)
-    config = update_params(config, study.best_params)
-    return config, study
 
 
 def debugger_strategy_tuner(config: M.ExperimentConfig, run_experiment):

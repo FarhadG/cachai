@@ -81,7 +81,7 @@ class StrategyConfig(BaseModel):
         AggregrateStrategy.Params |
         IncrementStrategy.Params
     ] = None
-    tune_params: bool = False
+    tune_params_trials: int = 0
 
 
 class CachaiConfig(BaseModel):

@@ -1,3 +1,4 @@
+import optuna
 import datetime
 import random
 import numpy as np
@@ -9,7 +10,7 @@ from src.simulator.ttl_simulator import TTLSimulator
 from src.utils.logger import create_logger
 from src.utils.evaluation import evaluate_loss
 from src.utils.file_system import standardize_path, write_config
-from src.utils.hyperparams_tuner import debugger_strategy_tuner, tune_hyperparams
+from src.utils.strategy_tuners import debugger_strategy_tuner
 
 
 def run_experiment(config: M.ExperimentConfig):
@@ -65,7 +66,11 @@ def run_experiment(config: M.ExperimentConfig):
 
 
 def configure_experiment(config: M.ExperimentConfig):
-    if config.cachai_config.strategy_config.tune_params:
-        config, study = tune_hyperparams(config, debugger_strategy_tuner, run_experiment)
+    tune_params_trials = config.cachai_config.strategy_config.tune_params_trials
+    if tune_params_trials > 0:
+        objective, update_params = debugger_strategy_tuner(config, run_experiment)
+        study = optuna.create_study(direction='minimize')
+        study.optimize(objective, n_trials=tune_params_trials)
+        config = update_params(config, study.best_params)
         print(f'Best hyperparameters: {study.best_params} with loss {study.best_value}')
     return run_experiment(config)

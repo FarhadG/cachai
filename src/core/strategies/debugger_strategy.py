@@ -31,12 +31,12 @@ class DebuggerStrategy(BaseStrategy):
     # TODO: make these params as models dumps or keep them as pydantic models
     class Params(BaseModel):
         offset: int = 0
-        learning_rate: str = 'adaptive'
-        eta0: float = 0.097
-        alpha: float = 2e-3
+        learning_rate: str = 'constant'
+        eta0: float = 9e-2
+        alpha: float = 6e-3
         penalty: str = 'elasticnet'
         tol: float = 1e-4
-        max_iter: int = 51
+        max_iter: int = 339
 
     def __init__(self, params, output_dir):
         super().__init__(output_dir)
