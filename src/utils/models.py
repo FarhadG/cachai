@@ -80,7 +80,7 @@ class StrategyConfig(BaseModel):
         DebuggerStrategy.Params |
         AggregrateStrategy.Params |
         IncrementStrategy.Params
-    ] = None,
+    ] = None
     tune_params: bool = False
 
 

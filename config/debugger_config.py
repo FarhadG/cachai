@@ -16,7 +16,7 @@ debugger_experiments = [
         cachai_config=M.CachaiConfig(
             strategy_config=M.StrategyConfig(
                 name=C.DEBUGGER_STRATEGY,
-                tune_params=True
+                tune_params=False
             )
         )
     )
