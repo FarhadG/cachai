@@ -5,32 +5,38 @@ import src.utils.constants as C
 import config.base_config as BaseConfig
 from src.core.strategies.increment_strategy import IncrementStrategy
 
-increment_experiments_configs = []
-
-for i in range(1, 20, 5):
-    increment_experiments_configs.append({
-        'experiment_name': f'Linear {i}',
+increment_experiments_configs = [
+    {
+        'experiment_name': 'Increment Linear 1',
         'function_type': 'linear',
-        'factor': i
-    })
-for i in np.arange(0, 2, 0.25):
-    increment_experiments_configs.append({
-        'experiment_name': f'Scalar {i}',
-        'function_type': 'scalar',
-        'factor': i
-    })
-for i in np.arange(0, 1, 0.25):
-    increment_experiments_configs.append({
-        'experiment_name': f'Power {i}',
-        'function_type': 'power',
-        'factor': i
-    })
-for i in np.arange(0, 1, 0.25):
-    increment_experiments_configs.append({
-        'experiment_name': f'Exponential {i}',
-        'function_type': 'exponential',
-        'factor': i
-    })
+        'factor': 1
+    }
+]
+
+# for i in range(1, 20, 5):
+#     increment_experiments_configs.append({
+#         'experiment_name': f'Linear {i}',
+#         'function_type': 'linear',
+#         'factor': i
+#     })
+# for i in np.arange(0, 2, 0.25):
+#     increment_experiments_configs.append({
+#         'experiment_name': f'Scalar {i}',
+#         'function_type': 'scalar',
+#         'factor': i
+#     })
+# for i in np.arange(0, 1, 0.25):
+#     increment_experiments_configs.append({
+#         'experiment_name': f'Power {i}',
+#         'function_type': 'power',
+#         'factor': i
+#     })
+# for i in np.arange(0, 1, 0.25):
+#     increment_experiments_configs.append({
+#         'experiment_name': f'Exponential {i}',
+#         'function_type': 'exponential',
+#         'factor': i
+#     })
 
 increment_experiments = []
 for config in increment_experiments_configs:
@@ -51,7 +57,8 @@ for config in increment_experiments_configs:
                         function_type=config['function_type'],
                         factor=config['factor'],
                         per_key=True,
-                    )
+                    ),
+                    tune_params_trials=50
                 )
             )
         )

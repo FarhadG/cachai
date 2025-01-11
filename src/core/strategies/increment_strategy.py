@@ -21,6 +21,19 @@ class IncrementStrategy(BaseStrategy):
         factor: float = 1
         max_value: float | None = 1e10
 
+    @staticmethod
+    def get_hyperparams(trial):
+        return {
+            'function_type': trial.suggest_categorical('function_type', [
+                'linear', 'scalar', 'power', 'exponential'
+            ]),
+            'per_key': trial.suggest_categorical('per_key', [True, False]),
+            'initial_value': trial.suggest_float('initial_value', 1, 100),
+            'increment_feedback_ttl': trial.suggest_categorical('increment_feedback_ttl', [True, False]),
+            'factor': trial.suggest_float('factor', 1, 10),
+            'max_value': trial.suggest_float('max_value', 1e10, 1e100),
+        }
+
     def __init__(self, params: Params, output_dir):
         super().__init__(output_dir)
         self._params = params or self.Params()

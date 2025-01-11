@@ -1,15 +1,14 @@
 import src.utils.models as M
 import src.utils.constants as C
 from src.utils.logger import create_logger
-from src.core.strategies.debugger_strategy import DebuggerStrategy, RegressionDebuggerStrategy
-from src.core.strategies.aggregate_strategy import AggregrateStrategy
-from src.core.strategies.increment_strategy import IncrementStrategy
+from src.utils.strategy_helpers import strategy_from_config
 
 
 class Cachai():
 
-    def __init__(self, config, output_dir):
-        self._strategy = strategy_from_config(config, output_dir)
+    def __init__(self, config: M.CachaiConfig, output_dir):
+        Strategy = strategy_from_config(config.strategy_config)
+        self._strategy = Strategy(config.strategy_config.params, output_dir)
         self._cachai_logger = create_logger(
             name=C.CACHAI_LOGGER,
             output_dir=output_dir,
@@ -26,18 +25,3 @@ class Cachai():
             observation_type=observation_type,
             key=key,
         ))
-
-
-def strategy_from_config(config, output_dir):
-    name = config.strategy_config.name
-    params = config.strategy_config.params
-    if name == C.DEBUGGER_STRATEGY:
-        return DebuggerStrategy(params, output_dir)
-    elif name == C.REGRESSION_DEBUGGER_STRATEGY:
-        return RegressionDebuggerStrategy(params, output_dir)
-    elif name == C.AGGREGATE_STRATEGY:
-        return AggregrateStrategy(params, output_dir)
-    elif name == C.INCREMENT_STRATEGY:
-        return IncrementStrategy(params, output_dir)
-    else:
-        raise ValueError(f'Unknown strategy type: {name}')

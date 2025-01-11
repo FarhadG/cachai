@@ -38,6 +38,20 @@ class RegressionDebuggerStrategy(BaseStrategy):
         tol: float = 1e-4
         max_iter: int = 339
 
+    @staticmethod
+    def get_hyperparams(trial):
+        return {
+            'offset': 0,
+            'learning_rate': trial.suggest_categorical('learning_rate', [
+                'constant', 'optimal', 'invscaling', 'adaptive'
+            ]),
+            'eta0': trial.suggest_float('eta0', 0.001, 0.1),
+            'alpha': trial.suggest_float('alpha', 0.0001, 0.01),
+            'penalty': trial.suggest_categorical('penalty', ['l2', 'l1', 'elasticnet']),
+            'tol': trial.suggest_categorical('tol', [1e-3, 1e-4]),
+            'max_iter': trial.suggest_int('max_iter', 1, 10000),
+        }
+
     def __init__(self, params, output_dir):
         super().__init__(output_dir)
         self._params = params or self.Params()
@@ -67,28 +81,3 @@ class RegressionDebuggerStrategy(BaseStrategy):
         X_scaled = self._scaler.fit_transform(info[C.X])
         y = info[C.Y_TRUE]
         self._model.partial_fit(X_scaled, [y])
-
-    @staticmethod
-    def params_tuner(config, run_experiment):
-        def update_params(config, params):
-            config_clone = config.model_copy(deep=True)
-            updated_params = RegressionDebuggerStrategy.Params(**params)
-            config_clone.cachai_config.strategy_config.params = updated_params
-            return config_clone
-
-        def objective(trial):
-            params = {
-                'offset': 0,
-                'learning_rate': trial.suggest_categorical('learning_rate', [
-                    'constant', 'optimal', 'invscaling', 'adaptive'
-                ]),
-                'eta0': trial.suggest_float('eta0', 0.001, 0.1),
-                'alpha': trial.suggest_float('alpha', 0.0001, 0.01),
-                'penalty': trial.suggest_categorical('penalty', ['l2', 'l1', 'elasticnet']),
-                'tol': trial.suggest_categorical('tol', [1e-3, 1e-4]),
-                'max_iter': trial.suggest_int('max_iter', 1, 10000),
-            }
-            updated_config = update_params(config, params)
-            result = run_experiment(updated_config)
-            return result[C.RMSE]
-        return objective, update_params

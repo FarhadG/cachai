@@ -10,8 +10,7 @@ from src.simulator.ttl_simulator import TTLSimulator
 from src.utils.logger import create_logger
 from src.utils.evaluation import evaluate_loss
 from src.utils.file_system import standardize_path, write_config
-from src.core.strategies.debugger_strategy import RegressionDebuggerStrategy
-from src.core.strategies.aggregate_strategy import AggregrateStrategy
+from src.utils.strategy_helpers import strategy_from_config
 
 
 def run_experiment(config: M.ExperimentConfig):
@@ -69,14 +68,18 @@ def run_experiment(config: M.ExperimentConfig):
 def configure_experiment(config: M.ExperimentConfig):
     tune_params_trials = config.cachai_config.strategy_config.tune_params_trials
     if tune_params_trials > 0:
-        strategy_config_name = config.cachai_config.strategy_config.name
-        if strategy_config_name == C.REGRESSION_DEBUGGER_STRATEGY:
-            tuner_func = RegressionDebuggerStrategy.params_tuner
-        elif strategy_config_name == C.AGGREGATE_STRATEGY:
-            tuner_func = AggregrateStrategy.params_tuner
-        else:
-            raise ValueError(f'Unknown tuning strategy: {config.cachai_config.strategy_config.name}')
-        objective, update_params = tuner_func(config, run_experiment)
+        def update_params(config, params):
+            config_clone = config.model_copy(deep=True)
+            config_clone.cachai_config.strategy_config.params = Strategy.Params(**params)
+            return config_clone
+
+        def objective(trial):
+            hyperparams = Strategy.get_hyperparams(trial)
+            updated_config = update_params(config, hyperparams)
+            result = run_experiment(updated_config)
+            return result[C.RMSE]
+
+        Strategy = strategy_from_config(config.cachai_config.strategy_config)
         study = optuna.create_study(direction='minimize')
         study.optimize(objective, n_trials=tune_params_trials)
         config = update_params(config, study.best_params)

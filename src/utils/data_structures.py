@@ -18,8 +18,6 @@ class KeyedBuffer:
     def _get_key(self, key):
         if self._per_key and key is None:
             raise ValueError('Key is required when per_key=True')
-        if not self._per_key and key is not None:
-            raise ValueError('Key is not allowed when per_key=False')
         return self.GLOBAL_KEY if key is None else key
 
     def append(self, value, key=None):
