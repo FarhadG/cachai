@@ -11,10 +11,10 @@ debugger_experiments_configs = [
         )
     },
     {
-        'experiment_name': C.REGRESSION_DEBUGGER_STRATEGY,
+        'experiment_name': C.DEBUGGER_REGRESSION_STRATEGY,
         'strategy_config': M.StrategyConfig(
-            name=C.REGRESSION_DEBUGGER_STRATEGY,
-            tune_params_trials=3
+            name=C.DEBUGGER_REGRESSION_STRATEGY,
+            tune_params_trials=BaseConfig.tune_params_trials
         )
     },
 ]

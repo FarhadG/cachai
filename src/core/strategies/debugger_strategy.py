@@ -26,7 +26,7 @@ class DebuggerStrategy(BaseStrategy):
         pass
 
 
-class RegressionDebuggerStrategy(BaseStrategy):
+class DebuggerRegressionStrategy(BaseStrategy):
 
     # TODO: make these params as models dumps or keep them as pydantic models
     class Params(BaseModel):
