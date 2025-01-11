@@ -1,8 +1,7 @@
 import src.utils.models as M
 import src.utils.constants as C
 from src.utils.logger import create_logger
-from src.core.strategies.base_strategy import BaseStrategy
-from src.core.strategies.debugger_strategy import DebuggerStrategy
+from src.core.strategies.debugger_strategy import DebuggerStrategy, RegressionDebuggerStrategy
 from src.core.strategies.aggregate_strategy import AggregrateStrategy
 from src.core.strategies.increment_strategy import IncrementStrategy
 
@@ -34,6 +33,8 @@ def strategy_from_config(config, output_dir):
     params = config.strategy_config.params
     if name == C.DEBUGGER_STRATEGY:
         return DebuggerStrategy(params, output_dir)
+    elif name == C.REGRESSION_DEBUGGER_STRATEGY:
+        return RegressionDebuggerStrategy(params, output_dir)
     elif name == C.AGGREGATE_STRATEGY:
         return AggregrateStrategy(params, output_dir)
     elif name == C.INCREMENT_STRATEGY:

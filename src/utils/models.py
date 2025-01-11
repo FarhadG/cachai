@@ -4,7 +4,7 @@ from typing import Literal, Optional
 from pydantic import BaseModel, create_model
 
 import src.utils.constants as C
-from src.core.strategies.debugger_strategy import DebuggerStrategy
+from src.core.strategies.debugger_strategy import DebuggerStrategy, RegressionDebuggerStrategy
 from src.core.strategies.aggregate_strategy import AggregrateStrategy
 from src.core.strategies.increment_strategy import IncrementStrategy
 
@@ -73,11 +73,13 @@ class StrategyConfig(BaseModel):
     # TODO: avoid hard coded Literal and use Strategy classes?
     name: Literal[
         'DebuggerStrategy',
+        'RegressionDebuggerStrategy',
         'AggregrateStrategy',
         'IncrementStrategy'
     ]
     params: Optional[
         DebuggerStrategy.Params |
+        RegressionDebuggerStrategy.Params |
         AggregrateStrategy.Params |
         IncrementStrategy.Params
     ] = None

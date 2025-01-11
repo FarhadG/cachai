@@ -3,6 +3,7 @@ import numpy as np
 from typing import Literal
 from pydantic import BaseModel
 
+import src.utils.constants as C
 from src.core.strategies.base_strategy import BaseStrategy
 from src.utils.data_structures import KeyedBuffer, KeyedDict
 
@@ -89,3 +90,31 @@ class AggregrateStrategy(BaseStrategy):
     def calculate_update_risk(mu, t):
         # TODO: Validate this function from paper
         return 1-np.exp(-(1/mu)*t)
+
+    @staticmethod
+    def params_tuner(config, run_experiment):
+        def update_params(config, params):
+            config_clone = config.model_copy(deep=True)
+            updated_params = AggregrateStrategy.Params(**params)
+            config_clone.cachai_config.strategy_config.params = updated_params
+            return config_clone
+
+        def objective(trial):
+            params = {
+                'function_type': trial.suggest_categorical('function_type', [
+                    'constant', 'arithmetic_mean', 'ewma',
+                    'min', 'max', 'median', 'mode', 'update_risk'
+                ]),
+                # FIX: per key throws strategy off during tuning
+                # 'per_key': trial.suggest_categorical('per_key', [True, False]),
+                'per_key': True,
+                'max_length': trial.suggest_int('max_length', 5, 50),
+                'initial_value': trial.suggest_float('initial_value', 0.1, 20),
+                'ewma_alpha': trial.suggest_float('ewma_alpha', 0.05, 0.95),
+                'update_risk_threshold': trial.suggest_float('update_risk_threshold', 0.05, 0.95),
+                'max_value': 1e10,
+            }
+            updated_config = update_params(config, params)
+            result = run_experiment(updated_config)
+            return result[C.RMSE]
+        return objective, update_params

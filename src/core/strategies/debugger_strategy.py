@@ -10,7 +10,7 @@ from src.core.strategies.base_strategy import BaseStrategy
 from src.utils.scalers import CustomStandardScaler, StandardScaler
 
 
-class _DebuggerStrategy(BaseStrategy):
+class DebuggerStrategy(BaseStrategy):
 
     class Params(BaseModel):
         offset: int = 0
@@ -26,7 +26,7 @@ class _DebuggerStrategy(BaseStrategy):
         pass
 
 
-class DebuggerStrategy(BaseStrategy):
+class RegressionDebuggerStrategy(BaseStrategy):
 
     # TODO: make these params as models dumps or keep them as pydantic models
     class Params(BaseModel):
@@ -67,3 +67,28 @@ class DebuggerStrategy(BaseStrategy):
         X_scaled = self._scaler.fit_transform(info[C.X])
         y = info[C.Y_TRUE]
         self._model.partial_fit(X_scaled, [y])
+
+    @staticmethod
+    def params_tuner(config, run_experiment):
+        def update_params(config, params):
+            config_clone = config.model_copy(deep=True)
+            updated_params = RegressionDebuggerStrategy.Params(**params)
+            config_clone.cachai_config.strategy_config.params = updated_params
+            return config_clone
+
+        def objective(trial):
+            params = {
+                'offset': 0,
+                'learning_rate': trial.suggest_categorical('learning_rate', [
+                    'constant', 'optimal', 'invscaling', 'adaptive'
+                ]),
+                'eta0': trial.suggest_float('eta0', 0.001, 0.1),
+                'alpha': trial.suggest_float('alpha', 0.0001, 0.01),
+                'penalty': trial.suggest_categorical('penalty', ['l2', 'l1', 'elasticnet']),
+                'tol': trial.suggest_categorical('tol', [1e-3, 1e-4]),
+                'max_iter': trial.suggest_int('max_iter', 1, 10000),
+            }
+            updated_config = update_params(config, params)
+            result = run_experiment(updated_config)
+            return result[C.RMSE]
+        return objective, update_params
