@@ -1,6 +1,6 @@
-import src.utils.models as M
-import src.utils.constants as C
-from src.core.strategies.aggregate_strategy import AggregrateStrategy
+import lib.utils.models as M
+import lib.utils.constants as C
+from lib.core.strategies.aggregate_strategy import AggregrateStrategy
 import config.base_config as BaseConfig
 
 aggregate_experiments_configs = [
@@ -51,7 +51,8 @@ for config in aggregate_experiments_configs:
                         ewma_alpha=config.get('ewma_alpha', None),
                         update_risk_threshold=config.get('update_risk_threshold', None)
                     ),
-                    tune_params_trials=BaseConfig.tune_params_trials
+                    # tune_params_trials=BaseConfig.tune_params_trials
+                    tune_params_trials=0
                 )
             )
         )

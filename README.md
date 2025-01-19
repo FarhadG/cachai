@@ -13,7 +13,7 @@ Modern systems require smart and adaptive caching to handle dynamic workloads. C
 
 **Clone the repository**:
 ```sh
-git clone https://github.com/FarhadG/src.git
+git clone https://github.com/FarhadG/lib.git
 cd cachai
 ```
 

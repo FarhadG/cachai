@@ -1,5 +1,5 @@
-import src.utils.models as M
-import src.utils.constants as C
+import lib.utils.models as M
+import lib.utils.constants as C
 import config.base_config as BaseConfig
 
 

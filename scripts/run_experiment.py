@@ -3,14 +3,14 @@ import datetime
 import random
 import numpy as np
 
-import src.utils.models as M
-import src.utils.constants as C
-from src.core.cachai import Cachai
-from src.simulator.ttl_simulator import TTLSimulator
-from src.utils.logger import create_logger
-from src.utils.evaluation import evaluate_loss
-from src.utils.file_system import standardize_path, write_config
-from src.utils.strategy_helpers import strategy_from_config
+import lib.utils.models as M
+import lib.utils.constants as C
+from lib.core.cachai import Cachai
+from lib.simulator.ttl_simulator import TTLSimulator
+from lib.utils.logger import create_logger
+from lib.utils.evaluation import evaluate_loss
+from lib.utils.file_system import standardize_path, write_config
+from lib.utils.strategy_helpers import strategy_from_config
 
 
 def run_experiment(config: M.ExperimentConfig):
